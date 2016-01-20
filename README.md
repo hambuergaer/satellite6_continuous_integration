@@ -1,0 +1,1 @@
+# satellite6_continuous_integration
