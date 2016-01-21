@@ -9,27 +9,32 @@ BUILDNUMBER=$3
 PUPPETCONTENTVIEW=cv-test-puppet-baseline
 ORGANIZATION="Default Organization"
 COMPOSITECONTENTVIEW=ccv-test-base
+GITURL="git@gitlab.example.com:freimer/soe-puppet-modules.git"
+PACKAGE_OUTPUT_DIR=/git/repo.puppet.puppet-os-baseline/packages/dev/
+CHECKOUT_TMP_DIR=/git/tmp/dev/
+PUPPET_MODULE_REPO=rep-puppet-modules-dev
+PUPPET_MODULE_PRODUCT=prd-puppet-modules
 
 if [[ $BRANCH = "dev" ]]
 then
 	echo "$DATE -> START Jenkins build for $JOBNAME, Git branch $BRANCH, build number $BUILDNUMBER." >> $LOG
-	if [ -d /git/tmp/dev/ ]
+	if [ -d $CHECKOUT_TMP_DIR ]
 	then
-		echo "$DATE -> Clean /git/tmp/${BRANCH}/" >> $LOG
-		rm -Rf /git/tmp/dev/ &>/dev/null
-		echo "$DATE -> Create /git/tmp/${BRANCH}/"
-		mkdir -p /git/tmp/dev/ &>/dev/null
+		echo "$DATE -> Cleanup directory $CHECKOUT_TMP_DIR" >> $LOG
+		rm -Rf $CHECKOUT_TMP_DIR &>/dev/null
+		echo "$DATE -> Create directory $CHECKOUT_TMP_DIR"
+		mkdir -p $CHECKOUT_TMP_DIR &>/dev/null
 	else
-		echo "$DATE -> Create /git/tmp/${BRANCH}/"
-		mkdir -p /git/tmp/dev/ &>/dev/null
+		echo "$DATE -> Create directory $CHECKOUT_TMP_DIR"
+		mkdir -p $CHECKOUT_TMP_DIR &>/dev/null
 	fi
-	cd /git/tmp/dev/
+	cd $CHECKOUT_TMP_DIR
 	echo "$DATE -> Start pulp-puppet-module-builder for branch $BRANCH" >> $LOG
-	pulp-puppet-module-builder --output-dir=/git/repo.puppet.puppet-os-baseline/packages/dev/ --url="git@gitlab.example.com:freimer/soe-puppet-modules.git" --branch=dev /git/tmp/dev/ &>> $LOG
+	pulp-puppet-module-builder --output-dir=$PACKAGE_OUTPUT_DIR --url="$GITURL" --branch=$BRANCH $CHECKOUT_TMP_DIR &>> $LOG
 	if [[ $? -eq 0 ]]
 	then
-		echo "$DATE -> Syncing Satellite repo rep-puppet-modules-dev in product prd-puppet-modules." >> $LOG
-		hammer repository synchronize --name rep-puppet-modules-dev --product prd-puppet-modules --organization "Default Organization"
+		echo "$DATE -> Syncing Satellite repo $PUPPET_MODULE_REPO in product $PUPPET_MODULE_PRODUCT." >> $LOG
+		hammer repository synchronize --name $PUPPET_MODULE_REPO --product $PUPPET_MODULE_PRODUCT --organization "$ORGANIZATION"
 		if [[ $? -eq 0 ]]
 		then
 			# Publish new version of Content View
