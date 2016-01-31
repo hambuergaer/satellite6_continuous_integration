@@ -1,52 +1,11 @@
 #!/bin/bash
 #
-# Usage: jenkins-sat-puppet-sync.sh [branch] [environment] [jenkins build job] [jenkins build no.]
-#
-# [environment] will be substituted to $environment.$branch
-
-# Where to put the log
-# e.g. /home/satellite/ci/log/jenkins-ci.log
-LOG=""
-
-# The Satellite 6 organization name
-ORGANIZATION=""
-
-# The name of the content view with the puppet modules
-PUPPETCONTENTVIEW=""
-
-# The name of the composite content view to publish and promote
-COMPOSITECONTENTVIEW=""
-
-# The name of the puppet module repository
-PUPPET_MODULE_REPO=""
-
-# The name of the puppet module product
-PUPPET_MODULE_PRODUCT=""
-
-# The Git repository of the puppet modules
-# e.g. ssh://git@... or https://user:pass@...
-GITURL=""
-
-# The directory where to put the compiled puppet modules (the directory of
-# the puppet repo in Satellite)
-# e.g. /git/yourreponame
-PACKAGE_OUTPUT_DIR=""
-
-# Temporary checkout directory 
-# e.g. /git/tmp
-CHECKOUT_TMP_DIR=""
-
-# Script parameters
-BRANCH=$1
-LIFECYCLEENV=$2
-JOBNAME=$3
-BUILDNUMBER=$4
-
-DATE=$(date +"%d-%m-%Y_%H:%M:%S")
+source `pwd`/properties
+source `pwd`/functions
 
 ##############################################################################
 
-echo "$DATE -> START Jenkins build for $JOBNAME, Git branch $BRANCH, build number $BUILDNUMBER." >> $LOG
+echo "$DATE -> START Jenkins build for $JENKINS_JOBNAME, Git branch $BRANCH, build number $JENKINS_BUILDNUMBER." >> $LOG
 if [ -d $CHECKOUT_TMP_DIR ]
 then
 	echo "$DATE -> Cleanup directory $CHECKOUT_TMP_DIR" >> $LOG

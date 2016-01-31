@@ -1,0 +1,87 @@
+#!/bin/bash
+
+if [ ! -f $LOG ]; then
+  mkdir -p log 2&>1 > /dev/null
+  touch $LOG > /dev/null
+fi
+
+# Option parsing
+
+OPTS=`getopt -o hnv -l org:,env:,branch:,ccv:,puppet-module-repo:,puppet-module-product:,package-output-dir:,package-tmp-dir:,giturl:,jenkins-job-name:,jenkins-buildnumber: -- "$@"`
+
+if [ $? != 0 ]
+then
+  echo "Wrong parameter"
+  exit 1
+fi
+
+eval set -- "$OPTS"
+
+while true ; do
+  case "$1" in
+    -h) print_help; shift;;
+    -n) DRYRUN=true; shift;;
+    -v) VERBOSE=true; shift;;
+    --env) LIFECYCLEENV="$2"; shift 2;;
+    --branch) BRANCH="$2"; shift 2;;
+    --org) ORGANIZATION="$2"; shift 2;;
+    --ccv) COMPOSITECONTENTVIEW="$2"; shift 2;;
+    --puppet-module-repo) PUPPET_MODULE_REPO="$2"; shift 2;;
+    --puppet-module-product) PUPPET_MODULE_PRODUCT="$2"; shift 2;;
+    --package-output-dir) PACKAGE_OUTPUT_DIR="$2"; shift 2;;
+    --package-tmp-dir) PACKAGE_TMP_DIR="$2"; shift 2;;
+    --giturl) GITURL="$2"; shift 2;;
+    --jenkins-job-name) JENKINS_JOBNAME="$2"; shift 2;;
+    --jenkins-buildnumber) JENKINS_BUILDNUMBER="$2"; shift 2;;
+    --) shift; break;;
+  esac
+done
+
+###############################################################################
+
+print_help(){
+  echo "Usage of `basename $0`"
+  echo ""
+  echo "Flags:"
+  echo "  -h                         This help message"
+# TBD  echo "  -n                         Perform a dry run"
+# TBD  echo "  -v                         Verbose output"
+  echo ""
+  echo "Required parameters:"
+  echo "  --org                      Satellite 6 Organization"
+  echo "  --env                      Lifecycle Environment"
+  echo "  --ccv                      Composite Content View"
+  echo "  --branch                   Git branch to check out"
+  echo "  --puppet-module-repo       Puppet Module Repository"
+  echo "  --puppet-module-product    Puppet Module Product"
+  echo "  --package-output-dir       Package output directory"
+  echo "  --package-tmp-dir          Temporary checkout directory"
+  echo "  --giturl                   Git URL"
+  echo ""
+  echo "Optional parameters:"
+  echo "  --jenkins-job-name         Jenkins job name"
+  echo "  --jenkins-build-number     Jenkins build number"
+  echo "  --log                      Logfile"
+  echo ""
+}
+
+# DEBUG
+if $DEBUG; then
+  # Print debug information
+  echo "Organization: $ORGANIZATION"
+  echo "Lifecycle Environment: $LIFECYCLEENV"
+  echo "Branch: $BRANCH"
+  echo "Composite Content View: $COMPOSITECONTENTVIEW"
+  echo "Puppet Module Repository: $PUPPET_MODULE_REPO"
+  echo "Puppet Module Product: $PUPPET_MODULE_PRODUCT"
+  echo ""
+  echo "Package output directory: $PACKAGE_OUTPUT_DIR"
+  echo "Checkout temp directory: $PACKAGE_TMP_DIR"
+  echo "Git URL: $GITURL"
+  echo ""
+  echo "Jenkins job name: $JENKINS_JOBNAME"
+  echo "Jenkins build number: $JENKINS_BUILDNUMBER"
+  echo "Logfile: $LOG"
+  echo ""
+fi
+

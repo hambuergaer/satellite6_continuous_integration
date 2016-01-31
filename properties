@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+#DEBUG=true
+DATE=$(date +"%Y-%m-%d %H:%M:%S")
+
+#### Satellite specific options
+#
+# The Satellite 6 organization name
+ORGANIZATION="Default Organization"
+
+# The name of the Satellite 6 Lifecycle Environment
+LIFECYCLEENV="Test"
+
+# The name of the branch to check out
+BRANCH="staging"
+
+# The name of the content view with the puppet modules
+PUPPETCONTENTVIEW=""
+
+# The name of the composite content view to publish and promote
+COMPOSITECONTENTVIEW=""
+
+# The name of the puppet module repository
+PUPPET_MODULE_REPO=""
+
+# The name of the puppet module product
+PUPPET_MODULE_PRODUCT=""
+
+
+#### Options for pulp-puppet-module-builder
+#
+# The directory where to put the compiled puppet modules (the directory of
+# the puppet repo in Satellite)
+# e.g. /git/yourreponame
+PACKAGE_OUTPUT_DIR=""
+
+# Temporary checkout directory
+# e.g. /git/tmp
+PACKAGE_TMP_DIR="/git/tmp"
+
+# The Git repository of the puppet modules
+# e.g. ssh://git@... or https://user:pass@...
+GITURL=""
+
+#### Jenkins specific options
+#
+# The name of the Jenkins build job
+JENKINS_JOBNAME=""
+
+# The build number of the Jenkins job
+JENKINS_BUILDNUMBER=""
+
+#### Common Options
+# 
+# Script output log
+LOG="`pwd`/log/output.log"
+
+###############################################################################
