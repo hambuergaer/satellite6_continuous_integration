@@ -1,5 +1,32 @@
 #!/bin/bash
 
+print_help (){
+  echo "Usage of `basename $0`"
+  echo ""
+  echo "Flags:"
+  echo "  -h                         This help message"
+# TBD  echo "  -n                         Perform a dry run"
+# TBD  echo "  -v                         Verbose output"
+  echo ""
+  echo "Required parameters:"
+  echo "  --org                      Satellite 6 Organization"
+  echo "  --env                      Lifecycle Environment"
+  echo "  --ccv                      Composite Content View"
+  echo "  --branch                   Git branch to check out"
+  echo "  --puppet-module-repo       Puppet Module Repository"
+  echo "  --puppet-module-product    Puppet Module Product"
+  echo "  --package-output-dir       Package output directory"
+  echo "  --package-tmp-dir          Temporary checkout directory"
+  echo "  --giturl                   Git URL"
+  echo ""
+  echo "Optional parameters:"
+  echo "  --jenkins-job-name         Jenkins job name"
+  echo "  --jenkins-build-number     Jenkins build number"
+  echo "  --log                      Logfile"
+  echo ""
+  exit 0
+}
+
 if [ ! -f $LOG ]; then
   mkdir -p log 2&>1 > /dev/null
   touch $LOG > /dev/null
@@ -13,6 +40,10 @@ if [ $? != 0 ]
 then
   echo "Wrong parameter"
   exit 1
+fi
+
+if [ "$1" == "" ]; then
+  print_help
 fi
 
 eval set -- "$OPTS"
@@ -39,31 +70,6 @@ done
 
 ###############################################################################
 
-print_help(){
-  echo "Usage of `basename $0`"
-  echo ""
-  echo "Flags:"
-  echo "  -h                         This help message"
-# TBD  echo "  -n                         Perform a dry run"
-# TBD  echo "  -v                         Verbose output"
-  echo ""
-  echo "Required parameters:"
-  echo "  --org                      Satellite 6 Organization"
-  echo "  --env                      Lifecycle Environment"
-  echo "  --ccv                      Composite Content View"
-  echo "  --branch                   Git branch to check out"
-  echo "  --puppet-module-repo       Puppet Module Repository"
-  echo "  --puppet-module-product    Puppet Module Product"
-  echo "  --package-output-dir       Package output directory"
-  echo "  --package-tmp-dir          Temporary checkout directory"
-  echo "  --giturl                   Git URL"
-  echo ""
-  echo "Optional parameters:"
-  echo "  --jenkins-job-name         Jenkins job name"
-  echo "  --jenkins-build-number     Jenkins build number"
-  echo "  --log                      Logfile"
-  echo ""
-}
 
 # DEBUG
 if $DEBUG; then
