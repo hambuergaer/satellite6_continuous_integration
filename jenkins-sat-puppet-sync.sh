@@ -18,7 +18,7 @@ else
 fi
 cd $CHECKOUT_TMP_DIR
 echo "$DATE -> Start pulp-puppet-module-builder for branch $BRANCH" >> $LOG
-pulp-puppet-module-builder --output-dir=$PACKAGE_OUTPUT_DIR --url="$GITURL" --branch=$BRANCH $CHECKOUT_TMP_DIR &>> $LOG
+pulp-puppet-module-builder --output-dir="$PACKAGE_OUTPUT_DIR" --url="$GITURL" --branch=$BRANCH $CHECKOUT_TMP_DIR &>> $LOG
 if [[ $? -eq 0 ]]
 then
 	echo "$DATE -> Syncing Satellite repo $PUPPET_MODULE_REPO in product $PUPPET_MODULE_PRODUCT." >> $LOG
@@ -47,8 +47,8 @@ then
 		CCV_LATEST_VERSION=`hammer content-view version list --organization "$ORGANIZATION" | grep -i $COMPOSITECONTENTVIEW | tr -d ' ' | cut -d '|' -f 3 | head -1`
 		echo "$DATE -> Latest version of Composite Content View $COMPOSITECONTENTVIEW is $CCV_LATEST_VERSION" >> $LOG
 		# Promote latest version of Composite Content View to Lifecycle Environment
-		echo "$DATE -> Promote version $CCV_LATEST_VERSION of Composite Content View $COMPOSITECONTENTVIEW to Lifecycle Environment $LIFECYCLEENV.$BRANCH" >> $LOG
-		hammer content-view version promote --content-view $COMPOSITECONTENTVIEW --version $CCV_LATEST_VERSION --organization "$ORGANIZATION" --to-lifecycle-environment $LIFECYCLEENV.$BRANCH --async
+		echo "$DATE -> Promote version $CCV_LATEST_VERSION of Composite Content View $COMPOSITECONTENTVIEW to Lifecycle Environment $LIFECYCLEENV" >> $LOG
+		hammer content-view version promote --content-view $COMPOSITECONTENTVIEW --version $CCV_LATEST_VERSION --organization "$ORGANIZATION" --to-lifecycle-environment $LIFECYCLEENV --async
 		echo "$DATE -> END: Successfully finished..." >> $LOG
 	else
 		echo "$DATE -> ERROR during hammer repository synchronization." >> $LOG
