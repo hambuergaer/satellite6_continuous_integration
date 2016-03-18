@@ -36,7 +36,7 @@ PACKAGE_OUTPUT_DIR=""
 
 # Temporary checkout directory
 # e.g. /git/tmp
-PACKAGE_TMP_DIR="/git/tmp"
+CHECKOUT_TMP_DIR="/git/tmp"
 
 # The Git repository of the puppet modules
 # e.g. ssh://git@... or https://user:pass@...
