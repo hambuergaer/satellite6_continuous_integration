@@ -24,6 +24,8 @@ Edit `properties` to change default script settings
   `--ccv`                   
     Composite Content View
 
+  `--cv`                   
+    Puppet Module Content View
 
   `--branch`
     Git branch to check out
