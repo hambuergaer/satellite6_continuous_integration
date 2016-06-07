@@ -30,7 +30,7 @@ then
 		hammer content-view publish --name $PUPPETCONTENTVIEW --organization "$ORGANIZATION"
 		# Find out latest version of Puppet Module Content View and it`s id
 		echo "$DATE -> Find out ID of latest Puppet module content view version of $PUPPETCONTENTVIEW" >> $LOG
-		PUPPETCONTENTVIEWID=`hammer content-view version list --organization "$ORGANIZATION" | grep -i $PUPPETCONTENTVIEW | head -1 | tr -d ' ' | cut -d '|' -f 1`
+		PUPPETCONTENTVIEWID=`hammer content-view version list --content-view $PUPPETCONTENTVIEW --organization "$ORGANIZATION" | tail -n +4 | head -1 | tr -d ' ' | cut -d '|' -f 1`
 		echo "$DATE -> ID of latest Puppet module content view version of $PUPPETCONTENTVIEW is $PUPPETCONTENTVIEWID" >> $LOG
 		# Print comma separated list of components which are also added to CCV except of Puppet baseline CV
 		echo "$DATE -> Find out which component id's are currently attached to the Composite Content View $COMPOSITECONTENTVIEW" >> $LOG
