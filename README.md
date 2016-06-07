@@ -68,6 +68,7 @@ jenkins-sat-puppet-sync.sh \
 --env myenv \
 --branch mybranch \
 --ccv myccv \
+--cv mycv \
 --puppet-module-repo my-sat6-puppet-repo \
 --package-output-dir=/git/my-sat6-puppet-repo \
 --package-tmp-dir /tmp \
